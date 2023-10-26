@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/meal_details.dart';
 
+// a delegation class used for customizing search behaviour.
 class SearchMeal extends SearchDelegate {
+//the list of meals we will be searching from.
   final List<Meal> _meals;
 
   SearchMeal(this._meals);
@@ -13,7 +15,7 @@ class SearchMeal extends SearchDelegate {
       if (query.isNotEmpty)
         IconButton(
           icon: const Icon(Icons.clear),
-          onPressed: () => query = '',
+          onPressed: () => query = '', //clearing search
         ),
     ];
   }
@@ -22,7 +24,7 @@ class SearchMeal extends SearchDelegate {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
-      onPressed: () => close(context, null),
+      onPressed: () => close(context, null), // Close the search bar
     );
   }
 
@@ -49,6 +51,7 @@ class SearchMeal extends SearchDelegate {
   }
 
   Widget _buildMealList(BuildContext context, List<Meal> meals) {
+  // Filter the list of meals based on the search query
     return ListView.separated(
       itemCount: meals.length,
       separatorBuilder: (context, index) => const Divider(),
@@ -56,7 +59,7 @@ class SearchMeal extends SearchDelegate {
         final meal = meals[index];
         return ListTile(
           title: Text(meal.title),
-          onTap: () => _navigateToMealDetails(context, meal),
+          onTap: () => _navigateToMealDetails(context, meal), // Navigate to meal details screen
         );
       },
     );
@@ -64,7 +67,7 @@ class SearchMeal extends SearchDelegate {
 
   void _navigateToMealDetails(BuildContext context, Meal meal) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => MealDetailsScreen(meal: meal),
+      builder: (context) => MealDetailsScreen(meal: meal), // Navigate to meal details screen
     ));
   }
 }

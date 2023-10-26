@@ -5,11 +5,13 @@ class MainDrawer extends StatelessWidget {
 
   final void Function(String identifier) onSelectScreen;
 
+// widget representing the main app drawer.
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: [
+        // DrawerHeader with app branding.
           DrawerHeader(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(

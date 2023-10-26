@@ -8,12 +8,15 @@ import 'package:meals/widgets/main_drawer.dart';
 import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/providers/filters_provider.dart';
 
+// Initial filter settings.
 const kInitialFilters = {
   Filter.glutenFree: false,
   Filter.lactoseFree: false,
   Filter.vegetarian: false,
   Filter.vegan: false
 };
+
+// Widget for the main app screen and tabs
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -26,13 +29,14 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-
+// function to change the selected page
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
   }
 
+// function to set the screen based on user selection
   void _setScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == 'filters') {

@@ -13,17 +13,18 @@ class MealItem extends StatelessWidget {
 
   final Meal meal;
   final void Function(Meal meal) onSelectMeal;
-
+  // Get the text representation of the meal complexity.
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
         meal.complexity.name.substring(1);
   }
-
+  // Get the text representation of the meal affordability.
   String get affordabilityText {
     return meal.affordability.name[0].toUpperCase() +
         meal.affordability.name.substring(1);
   }
 
+//Widget representing a meal item.
   @override
   Widget build(BuildContext context) {
     return Card(

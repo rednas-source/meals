@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals/models/meal.dart';
 
+// Favorite class, used to toggle on and off favorite meals.
 class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavoriteMealsNotifier() : super([]);
 
@@ -18,6 +19,7 @@ class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   }
 }
 
+/// Provider to access and manipulate favorite meals
 final favoriteMealsProvider =
     StateNotifierProvider<FavoriteMealsNotifier, List<Meal>>((ref) {
   return FavoriteMealsNotifier();
