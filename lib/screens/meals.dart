@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meals/providers/search_meal.dart';
 
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/meal_details.dart';
 import 'package:meals/widgets/meal_item.dart';
 
+// MealsScreen is a widget to display a list of meals.
 class MealsScreen extends StatelessWidget {
   const MealsScreen({
     super.key,
@@ -14,6 +16,7 @@ class MealsScreen extends StatelessWidget {
   final String? title;
   final List<Meal> meals;
 
+  // Function to navigate to the details screen for a meal.
   void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -47,6 +50,7 @@ class MealsScreen extends StatelessWidget {
       ),
     );
 
+    // If there are meals, display them in a ListView.
     if (meals.isNotEmpty) {
       content = ListView.builder(
         itemCount: meals.length,
@@ -65,6 +69,15 @@ class MealsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // Show a search delegate for meal searching.
+              showSearch(context: context, delegate: SearchMeal(meals));
+            },
+          ),
+        ],
         title: Text(title!),
       ),
       body: content,

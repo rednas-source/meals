@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/providers/favorites_provider.dart';
 
+// MealDetailsScreen is a widget to display meal details.
 class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
     super.key,
@@ -16,15 +17,19 @@ class MealDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favoriteMeals = ref.watch(favoriteMealsProvider);
 
+    // Check if the meal is a favorite.
     final isFavorite = favoriteMeals.contains(meal);
 
     return Scaffold(
         appBar: AppBar(title: Text(meal.title), actions: [
           IconButton(
             onPressed: () {
+              // Toggle the favorite status of the meal.
               final wasAdded = ref
                   .read(favoriteMealsProvider.notifier)
                   .toggleMealFavoriteStatus(meal);
+
+              // Show a snack bar indicating if the meal was added or removed from favorites.
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -33,32 +38,17 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) {
-                return RotationTransition(
-                  turns: Tween<double>(begin: 0.8, end: 1).animate(animation),
-                  child: child,
-                );
-              },
-              child: Icon(
-                isFavorite ? Icons.star : Icons.star_border,
-                key: ValueKey(isFavorite),
-              ),
-            ),
+            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
           )
         ]),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Hero(
-                tag: meal.id,
-                child: Image.network(
-                  meal.imageUrl,
-                  height: 300,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+              Image.network(
+                meal.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
               const SizedBox(height: 14),
               Text(
@@ -69,6 +59,7 @@ class MealDetailsScreen extends ConsumerWidget {
                     ),
               ),
               const SizedBox(height: 14),
+              // Display the list of meal ingredients.
               for (final ingredient in meal.ingredients)
                 Text(
                   ingredient,
@@ -85,6 +76,7 @@ class MealDetailsScreen extends ConsumerWidget {
                     ),
               ),
               const SizedBox(height: 14),
+              // Display the list of meal preparation steps.
               for (final step in meal.steps)
                 Padding(
                   padding: const EdgeInsets.symmetric(
