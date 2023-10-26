@@ -1,0 +1,200 @@
+@startuml
+set namespaceSeparator ::
+
+class "meals::main.dart::App" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::main.dart::App"
+
+class "meals::models::category.dart::Category" {
+  +String id
+  +String title
+  +Color color
+}
+
+"meals::models::category.dart::Category" o-- "dart::ui::Color"
+
+class "meals::models::meal.dart::Meal" {
+  +String id
+  +List<String> categories
+  +String title
+  +String imageUrl
+  +List<String> ingredients
+  +List<String> steps
+  +int duration
+  +Complexity complexity
+  +Affordability affordability
+  +bool isGlutenFree
+  +bool isLactoseFree
+  +bool isVegan
+  +bool isVegetarian
+}
+
+"meals::models::meal.dart::Meal" o-- "meals::models::meal.dart::Complexity"
+"meals::models::meal.dart::Meal" o-- "meals::models::meal.dart::Affordability"
+
+class "meals::models::meal.dart::Complexity" {
+  +int index
+  {static} +List<Complexity> values
+  {static} +Complexity simple
+  {static} +Complexity challenging
+  {static} +Complexity hard
+}
+
+"meals::models::meal.dart::Complexity" o-- "meals::models::meal.dart::Complexity"
+"dart::core::Enum" <|-- "meals::models::meal.dart::Complexity"
+
+class "meals::models::meal.dart::Affordability" {
+  +int index
+  {static} +List<Affordability> values
+  {static} +Affordability affordable
+  {static} +Affordability pricey
+  {static} +Affordability luxurious
+}
+
+"meals::models::meal.dart::Affordability" o-- "meals::models::meal.dart::Affordability"
+"dart::core::Enum" <|-- "meals::models::meal.dart::Affordability"
+
+class "meals::providers::favorites_provider.dart::FavoriteMealsNotifier" {
+  +bool toggleMealFavoriteStatus()
+}
+
+"state_notifier::state_notifier.dart::StateNotifier" <|-- "meals::providers::favorites_provider.dart::FavoriteMealsNotifier"
+
+class "meals::providers::filters_provider.dart::FiltersNotifier" {
+  +void setFilters()
+  +void setFilter()
+}
+
+"state_notifier::state_notifier.dart::StateNotifier" <|-- "meals::providers::filters_provider.dart::FiltersNotifier"
+
+class "meals::providers::filters_provider.dart::Filter" {
+  +int index
+  {static} +List<Filter> values
+  {static} +Filter glutenFree
+  {static} +Filter lactoseFree
+  {static} +Filter vegetarian
+  {static} +Filter vegan
+}
+
+"meals::providers::filters_provider.dart::Filter" o-- "meals::providers::filters_provider.dart::Filter"
+"dart::core::Enum" <|-- "meals::providers::filters_provider.dart::Filter"
+
+class "meals::providers::search_meal.dart::SearchMeal" {
+  -List<Meal> _meals
+  +List<Widget> buildActions()
+  +Widget buildLeading()
+  +Widget buildResults()
+  +Widget buildSuggestions()
+  -List<Meal> _getFilteredMeals()
+  -Widget _buildMealList()
+  -void _navigateToMealDetails()
+}
+
+"flutter::src::material::search.dart::SearchDelegate" <|-- "meals::providers::search_meal.dart::SearchMeal"
+
+class "meals::screens::categories.dart::CategoriesScreen" {
+  +List<Meal> availableMeals
+  +State<CategoriesScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "meals::screens::categories.dart::CategoriesScreen"
+
+class "meals::screens::categories.dart::_CategoriesScreenState" {
+  -AnimationController _animationController
+  -TextEditingController _searchController
+  +List<Meal> filteredMeals
+  +bool showSearchResults
+  +void initState()
+  +void dispose()
+  +void onSearch()
+  +void clearSearch()
+  +void selectCategory()
+  +Widget build()
+}
+
+"meals::screens::categories.dart::_CategoriesScreenState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"meals::screens::categories.dart::_CategoriesScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "meals::screens::categories.dart::_CategoriesScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin" <|-- "meals::screens::categories.dart::_CategoriesScreenState"
+
+class "meals::screens::filters.dart::FiltersScreen" {
+  +Widget build()
+}
+
+"flutter_riverpod::src::consumer.dart::ConsumerWidget" <|-- "meals::screens::filters.dart::FiltersScreen"
+
+class "meals::screens::meals.dart::MealsScreen" {
+  +String? title
+  +List<Meal> meals
+  +void selectMeal()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::screens::meals.dart::MealsScreen"
+
+class "meals::screens::meal_details.dart::MealDetailsScreen" {
+  +Meal meal
+  +Widget build()
+}
+
+"meals::screens::meal_details.dart::MealDetailsScreen" o-- "meals::models::meal.dart::Meal"
+"flutter_riverpod::src::consumer.dart::ConsumerWidget" <|-- "meals::screens::meal_details.dart::MealDetailsScreen"
+
+class "meals::screens::tabs.dart::TabsScreen" {
+  +ConsumerState<TabsScreen> createState()
+}
+
+"flutter_riverpod::src::consumer.dart::ConsumerStatefulWidget" <|-- "meals::screens::tabs.dart::TabsScreen"
+
+class "meals::screens::tabs.dart::_TabsScreenState" {
+  -int _selectedPageIndex
+  -void _selectPage()
+  -void _setScreen()
+  +Widget build()
+}
+
+"flutter_riverpod::src::consumer.dart::ConsumerState" <|-- "meals::screens::tabs.dart::_TabsScreenState"
+
+class "meals::widgets::category_grid_item.dart::CategoryGridItem" {
+  +Category category
+  +void Function() onSelectCategory
+  +Widget build()
+}
+
+"meals::widgets::category_grid_item.dart::CategoryGridItem" o-- "meals::models::category.dart::Category"
+"meals::widgets::category_grid_item.dart::CategoryGridItem" o-- "null::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::widgets::category_grid_item.dart::CategoryGridItem"
+
+class "meals::widgets::main_drawer.dart::MainDrawer" {
+  +void Function(String) onSelectScreen
+  +Widget build()
+}
+
+"meals::widgets::main_drawer.dart::MainDrawer" o-- "null::void Function(String)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::widgets::main_drawer.dart::MainDrawer"
+
+class "meals::widgets::meal_item.dart::MealItem" {
+  +Meal meal
+  +void Function(Meal) onSelectMeal
+  +String complexityText
+  +String affordabilityText
+  +Widget build()
+}
+
+"meals::widgets::meal_item.dart::MealItem" o-- "meals::models::meal.dart::Meal"
+"meals::widgets::meal_item.dart::MealItem" o-- "null::void Function(Meal)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::widgets::meal_item.dart::MealItem"
+
+class "meals::widgets::meal_item_trait.dart::MealItemTrait" {
+  +IconData icon
+  +String label
+  +Widget build()
+}
+
+"meals::widgets::meal_item_trait.dart::MealItemTrait" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "meals::widgets::meal_item_trait.dart::MealItemTrait"
+
+
+@enduml

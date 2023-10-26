@@ -7,7 +7,7 @@ import 'package:meals/widgets/category_grid_item.dart';
 
 /// Displays a grid of meal categories.
 class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({
+  const CategoriesScreen({super.key, 
     required this.availableMeals,
   }) ;
 
@@ -20,7 +20,7 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<Meal> filteredMeals = [];
   bool showSearchResults = false;
 
@@ -109,7 +109,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       labelText: 'Search Meals',
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                     ),
                     style: const TextStyle(
                       color: Colors.white,
@@ -126,7 +126,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                       color: Colors.grey[700],
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.clear),
+                      icon: const Icon(Icons.clear),
                       onPressed: clearSearch,
                     ),
                   ),

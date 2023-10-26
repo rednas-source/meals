@@ -10,6 +10,7 @@ enum Affordability {
   luxurious,
 }
 
+// all values required for a meal.
 class Meal {
   const Meal({
     required this.id,
